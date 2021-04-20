@@ -15,23 +15,27 @@ call plug#end()
 colorscheme gruvbox
 
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = 0
 
-"With fzfin normal mode write :Files to navigate
 set encoding=utf-8
 
 "Some servers have issues with backup files
 set nobackup
 set noswapfile
+"Persist undo history
+set undofile 
+set undodir=~/.vim/undodir
+"stop acting like classic vi
+set nocompatible
+set history=1000
 
 set number
 set textwidth=79
 set numberwidth=1
 set ruler
 set cursorline
-set encoding=utf-8
 set showmatch
-set matchtime=2
+set matchtime=1
 set relativenumber
 "Display 5 lines above the cursor when scrolling with a mouse
 set scrolloff=5
