@@ -22,6 +22,7 @@ set encoding=utf-8
 
 "Some servers have issues with backup files
 set nobackup
+set noswapfile
 
 set number
 set textwidth=79
