@@ -62,6 +62,10 @@ nmap <Leader>wq :wq!<CR>
 "Toggle terminal Ctrl Z
 nnoremap <silent> <C-z> :ToggleTerminal<Enter>
 tnoremap <silent> <C-z> <C-\><C-n>:ToggleTerminal<Enter>
+
+"fzf 
+nmap <Leader>f :Files<CR>
+
 "coc 
 set updatetime=300
 set shortmess+=c
