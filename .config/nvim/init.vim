@@ -10,12 +10,14 @@ call plug#begin('~/.local/share/nvim/site/autoload/plugged')
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'vim-airline/vim-airline'
     Plug 'morhetz/gruvbox'
+    Plug 'chun-yang/auto-pairs'
 call plug#end()
 
 colorscheme gruvbox
 
-"let g:airline#extensions#tabline#enabled = 1
-"let g:airline_powerline_fonts = 0
+"let g:AutoPairsFlyMode = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 0
 
 set encoding=utf-8
 
@@ -48,14 +50,22 @@ set wrap
 " Size tabs in spaces
 set sw=4
 
+
+
 let mapleader=" "
-" Press space, s, an ocurrence with 2 chars, and jump into text!
+" Press mapleader, s, an ocurrence with 2 chars, and jump into text!
 nmap <Leader>s <Plug>(easymotion-s2)
 nmap <Leader>n :NERDTreeFind<CR>
-nmap <Leader>nn :NERDTreeClose<CR>
+nmap <Leader>nn :NERDTreeToggle<CR>
 nmap <Leader>wq :wq!<CR>
 nmap <Leader>qq :q!<CR>
-let NERDTreeQuitOnOpen=1
+nmap <Leader>w :w<CR>
+"next buffer
+nmap <Leader>bn :bn<CR>
+"delete curent buffer
+nmap <Leader>bb :bw<CR>
+"let NERDTreeQuitOnOpen=1
+
 "Auto close brackets
 "inoremap " ""<left>
 "inoremap ' ''<left>
@@ -70,9 +80,10 @@ nnoremap <silent> <C-z> :ToggleTerminal<Enter>
 tnoremap <silent> <C-z> <C-\><C-n>:ToggleTerminal<Enter>
 
 "fzf 
-"nmap <Leader>f :Files<CR>
-"let g:airline#extensions#tabline#enabled = 0
+nmap <Leader>f :Files<CR>
+
 "coc 
+let g:coc_global_extensions=['coc-json','coc-css','coc-tsserver','coc-clangd', 'coc-emmet','coc-fzf-preview','coc-highlight','coc-prettier','coc-pyright','coc-sh','coc-sql','coc-html']
 set updatetime=300
 set shortmess+=c
 "Tab for completion
@@ -85,12 +96,16 @@ inoremap <silent><expr> <TAB>
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
 " Ctrl space to trigger completion
 if has('nvim')
   inoremap <silent><expr> <c-space> coc#refresh()
 else
   inoremap <silent><expr> <c-@> coc#refresh()
 endif
-
 "Prettier with :Prettier
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
