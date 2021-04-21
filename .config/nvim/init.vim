@@ -14,8 +14,8 @@ call plug#end()
 
 colorscheme gruvbox
 
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 0
+"let g:airline#extensions#tabline#enabled = 1
+"let g:airline_powerline_fonts = 0
 
 set encoding=utf-8
 
@@ -52,9 +52,10 @@ let mapleader=" "
 " Press space, s, an ocurrence with 2 chars, and jump into text!
 nmap <Leader>s <Plug>(easymotion-s2)
 nmap <Leader>n :NERDTreeFind<CR>
-nmap <Leader>nm :NERDTreeClose<CR>
+nmap <Leader>nn :NERDTreeClose<CR>
 nmap <Leader>wq :wq!<CR>
-
+nmap <Leader>qq :q!<CR>
+let NERDTreeQuitOnOpen=1
 "Auto close brackets
 "inoremap " ""<left>
 "inoremap ' ''<left>
@@ -69,8 +70,8 @@ nnoremap <silent> <C-z> :ToggleTerminal<Enter>
 tnoremap <silent> <C-z> <C-\><C-n>:ToggleTerminal<Enter>
 
 "fzf 
-nmap <Leader>f :Files<CR>
-
+"nmap <Leader>f :Files<CR>
+"let g:airline#extensions#tabline#enabled = 0
 "coc 
 set updatetime=300
 set shortmess+=c
