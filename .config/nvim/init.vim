@@ -38,7 +38,7 @@ set ruler
 set cursorline
 set showmatch
 set matchtime=1
-set relativenumber
+"set relativenumber
 "Display 5 lines above the cursor when scrolling with a mouse
 set scrolloff=5
 "Fixes common backspace problems
@@ -83,7 +83,7 @@ tnoremap <silent> <C-z> <C-\><C-n>:ToggleTerminal<Enter>
 nmap <Leader>f :Files<CR>
 
 "coc 
-let g:coc_global_extensions=['coc-json','coc-css','coc-tsserver','coc-clangd', 'coc-emmet','coc-fzf-preview','coc-highlight','coc-prettier','coc-pyright','coc-sh','coc-sql','coc-html']
+let g:coc_global_extensions=['coc-json','coc-css','coc-tsserver','coc-clangd', 'coc-emmet','coc-fzf-preview','coc-highlight','coc-prettier','coc-pyright','coc-sh','coc-sql','coc-html','coc-java']
 set updatetime=300
 set shortmess+=c
 "Tab for completion
