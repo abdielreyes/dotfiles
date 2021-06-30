@@ -9,11 +9,13 @@ call plug#begin('~/.local/share/nvim/site/autoload/plugged')
     Plug 'leafgarland/typescript-vim'
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'vim-airline/vim-airline'
-    Plug 'morhetz/gruvbox'
+    Plug 'arcticicestudio/nord-vim'
     Plug 'chun-yang/auto-pairs'
+    Plug 'psliwka/vim-smoothie'
 call plug#end()
 
-colorscheme gruvbox
+"colorscheme gruvbox
+colorscheme nord
 
 "let g:AutoPairsFlyMode = 1
 let g:airline#extensions#tabline#enabled = 1
