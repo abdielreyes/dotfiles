@@ -1,5 +1,6 @@
 call plug#begin('~/.local/share/nvim/site/autoload/plugged')
     Plug 'preservim/nerdtree'
+    Plug 'Xuyuanp/vim-nerdtree-syntax-highlight'
     Plug 'easymotion/vim-easymotion'
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'caenrique/nvim-toggle-terminal'
@@ -11,7 +12,7 @@ call plug#begin('~/.local/share/nvim/site/autoload/plugged')
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'morhetz/gruvbox'
-    Plug 'chun-yang/auto-pairs'
+"    Plug 'chun-yang/auto-pairs'
     Plug 'psliwka/vim-smoothie'
     Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 call plug#end()
@@ -62,6 +63,8 @@ nmap <Leader> nr :NERDTreeRefreshRoot<CR>
 nmap <Leader>ww :wq!<CR>
 nmap <Leader>qq :q!<CR>
 nmap <Leader>w :w<CR>
+let NERDTreeShowHidden=1
+
 "next buffer
 nmap <Leader>bn :bn<CR>
 "delete curent buffer
@@ -72,11 +75,11 @@ nmap <Leader>bb :bw<CR>
 nnoremap <silent> <C-z> :ToggleTerminal<Enter>
 tnoremap <silent> <C-z> <C-\><C-n>:ToggleTerminal<Enter>
 "Enter without entering in insert mode
-nnoremap o o<Esc>
-nnoremap O O<Esc>
+"nnoremap o o<Esc>
+"nnoremap O O<Esc>
 
 "fzf 
-nmap <Leader>f :Files<CR>
+nmap <Leader>ff :Files<CR>
 
 "Move lines
 nnoremap <C-A-j> :m .+1<CR>==
@@ -87,45 +90,48 @@ vnoremap <C-A-j> :m '>+1<CR>gv=gv
 vnoremap <C-A-k> :m '<-2<CR>gv=gv
 
 "COC config
-let g:coc_global_extensions=['coc-json','coc-css','coc-tsserver','coc-clangd', 'coc-emmet','coc-fzf-preview','coc-highlight','coc-prettier','coc-pyright','coc-sh','coc-sql','coc-html','coc-java']
+
+let g:coc_global_extensions=['coc-solargraph','coc-json','coc-css','coc-tsserver','coc-clangd', 'coc-emmet','coc-fzf-preview','coc-highlight','coc-prettier','coc-pyright','coc-sh','coc-sql','coc-html','coc-java']
 " TextEdit might fail if hidden is not set.
 set hidden
 set updatetime=300
 set shortmess+=c
 "Tab for completion
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr><S-TAB> plumvisible() ? "\<C-p>" : "\<C-h>"
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
-" Use `[g` and `]g` to navigate diagnostics
-" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-" Ctrl space to trigger completion
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
 if has('nvim')
   inoremap <silent><expr> <c-space> coc#refresh()
 else
   inoremap <silent><expr> <c-@> coc#refresh()
 endif
-" Make <CR> auto-select the first completion item and notify coc.nvim to
-" format on enter, <cr> could be remapped by other vim plugin
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-" Add (Neo)Vim's native statusline support.
-" NOTE: Please see `:h coc-status` for integrations with external plugins that
-" provide custom statusline: lightline.vim, vim-airline.
+
+" confirms selection if any or just break line if none
+function! EnterSelect()
+    " if the popup is visible and an option is not selected
+    if pumvisible() && complete_info()["selected"] == -1
+        return "\<C-y>\<CR>"
+
+    " if the pum is visible and an option is selected
+    elseif pumvisible()
+        return coc#_select_confirm()
+
+    " if the pum is not visible
+    else
+        return "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+    endif
+endfunction
+
+" makes <CR> confirm selection if any or just break line if none
+inoremap <silent><expr> <cr> EnterSelect()
+"inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+"                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-" Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
 "COC Prettier with :Prettier
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
