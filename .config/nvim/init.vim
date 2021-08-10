@@ -11,13 +11,16 @@ call plug#begin('~/.local/share/nvim/site/autoload/plugged')
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
-    Plug 'morhetz/gruvbox'
-"    Plug 'chun-yang/auto-pairs'
+    "Plug 'morhetz/gruvbox'
+    "Plug 'arcticicestudio/nord-vim'
+    Plug 'rafi/awesome-vim-colorschemes'
+    Plug 'chun-yang/auto-pairs'
     Plug 'psliwka/vim-smoothie'
     Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 call plug#end()
 
-colorscheme gruvbox
+"colorscheme gruvbox
+colorscheme nord
 
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 0
@@ -44,7 +47,7 @@ set matchtime=1
 "set relativenumber
 
 "Display 5 lines above the cursor when scrolling with a mouse
-set scrolloff=5
+    set scrolloff=8
 "Fixes common backspace problems
 set backspace=indent,eol,start
 "Speedup scrolling
@@ -59,7 +62,7 @@ let mapleader=" "
 nmap <Leader>s <Plug>(easymotion-s2)
 nmap <Leader>n :NERDTreeFind<CR>
 nmap <Leader>nn :NERDTreeToggle<CR>
-nmap <Leader> nr :NERDTreeRefreshRoot<CR>
+nmap <Leader>nr :NERDTreeRefreshRoot<CR>
 nmap <Leader>ww :wq!<CR>
 nmap <Leader>qq :q!<CR>
 nmap <Leader>w :w<CR>
@@ -135,3 +138,6 @@ inoremap <silent><expr> <cr> EnterSelect()
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 "COC Prettier with :Prettier
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
+
+
