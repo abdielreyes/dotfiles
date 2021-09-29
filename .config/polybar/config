@@ -29,25 +29,29 @@
 ;==========================================================
 
 [colors]
-;background = ${xrdb:color0:#222}
-background = #000000
-background-alt = #444
+;background = #8B008B
+;background-alt = #9932CC
 ;foreground = ${xrdb:color7:#222}
+;foreground-alt = ${xrdb:color7:#222}
+
+background = #000000
+background-alt = #30616e
 foreground = #dfdfdf
-foreground-alt = #555
+foreground-alt = #808080
+
 primary = #ffffff
 secondary = #ffffff
 alert = #dddddd
 
-[bar/example]
-;monitor = ${env:MONITOR:HDMI-1}
+[bar/main]
+monitor = eDP1
 width = 100%
 height = 27
 ;offset-x = 1%
 ;offset-y = 1%
 radius = 1.0
 fixed-center = false
-
+wm-restack = bspwm
 background = ${colors.background}
 foreground = ${colors.foreground}
 
@@ -56,42 +60,57 @@ line-color = #f00
 
 border-size = 4
 border-color = #00000000
-
 padding-left = 0
 padding-right = 2
-
 module-margin-left = 1
 module-margin-right = 2
 
-font-0 = "Iosevka:pixelsize=10;1"
-;font-1 = unifont:fontformat=truetype:size=10:antialias=false;0
-;font-2 = siji:pixelsize=10;1
-
+font-0 = "Hack Nerd Font:pixelsize=12;1"
 modules-left = bspwm 
 modules-center =  xwindow 
-modules-right =   backlight pulseaudio  wlan eth battery temperature date powermenu
+modules-right =  memory cpu backlight pulseaudio  wlan battery temperature date powermenu
 
 tray-position = right
 tray-padding = 2
-;tray-background = #0063ff
-
-;wm-restack = bspwm
-;wm-restack = i3
-
-;override-redirect = true
-
-;scroll-up = bspwm-desknext
-;scroll-down = bspwm-deskprev
-
-;scroll-up = i3wm-wsnext
-;scroll-down = i3wm-wsprev
-
 cursor-click = pointer
 cursor-scroll = ns-resize
 
+[bar/2ndbar]
+monitor = DP1
+width = 100%
+height = 27
+;offset-x = 1%
+;offset-y = 1%
+radius = 1.0
+fixed-center = true
+wm-restack = bspwm
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 3
+line-color = #f00
+
+border-size = 4
+border-color = #00000000
+padding-left = 0
+padding-right = 2
+module-margin-left = 1
+module-margin-right = 2
+
+font-0 = "Hack Nerd Font:pixelsize=12;1"
+modules-left = bspwm 
+modules-center =  xwindow 
+modules-right =    pulseaudio date powermenu
+
+tray-position = right
+tray-padding = 2
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+
 [module/xwindow]
 type = internal/xwindow
-label = %title:0:30:...%
+label = %title:0:50:...%
 
 [module/bspwm]
 type = internal/bspwm
@@ -113,11 +132,11 @@ label-empty-foreground = ${colors.foreground-alt}
 label-empty-padding = 2
 
 [module/backlight]
-type= internal/backlight
-card= intel_backlight
-use-actual-brightness = true
+type= internal/xbacklight
+;card= intel_backlight
+;use-actual-brightness = true
 enable-scroll = true
-format = BR <label> <bar>
+format =  <label> <bar>
 label = %percentage%%
 bar-width = 10
 bar-indicator = |
@@ -126,11 +145,10 @@ bar-empty = ─
 
 [module/wlan]
 type = internal/network
-interface = wlp3s0
+interface = wlan0
 interval = 3.0
 
 format-connected = <ramp-signal> <label-connected>
-format-connected-underline = #ffffff
 label-connected = %essid%
 
 format-disconnected =
@@ -138,64 +156,40 @@ format-disconnected =
 ;format-disconnected-underline = ${self.format-connected-underline}
 ;label-disconnected = %ifname% disconnected
 ;label-disconnected-foreground = ${colors.foreground-alt}
+ramp-signal-0 = 睊
+ramp-signal-1 = 直
+ramp-signal-2 = 直
+ramp-signal-3 = 
+ramp-signal-4 = 
+ramp-signal-foreground = ${colors.foreground}
 
-ramp-signal-0 = 
-ramp-signal-1 = 
-ramp-signal-2 = 
-ramp-signal-3 = 
-ramp-signal-4 = 
-ramp-signal-foreground = ${colors.foreground-alt}
-
-[module/eth]
-type = internal/network
-interface = enp2s0
-interval = 3.0
-
-format-connected-underline = #55aa55
-format-connected-prefix = " "
-format-connected-prefix-foreground = ${colors.foreground-alt}
-label-connected = %local_ip%
-
-format-disconnected =
-;format-disconnected = <label-disconnected>
-;format-disconnected-underline = ${self.format-connected-underline}
-;label-disconnected = %ifname% disconnected
-;label-disconnected-foreground = ${colors.foreground-alt}
 
 [module/date]
 type = internal/date
 interval = 5
-
 date =
-date-alt = " %Y-%m-%d"
-
+date-alt = " %d-%m-%Y"
 time = %H:%M
 time-alt = %H:%M:%S
-
-format-prefix = 
+format-prefix = 
 format-prefix-foreground = ${colors.foreground-alt}
-format-underline = #ffffff
-
-label = %date% %time%
+label = %date% %time%
 
 [module/pulseaudio]
 type = internal/pulseaudio
-
 format-volume = <label-volume> <bar-volume>
-label-volume = VOL %percentage%%
+label-volume = 墳 %percentage%%
 label-volume-foreground = ${root.foreground}
-
-label-muted = 🔇 muted
+label-muted = ﱝ muted
 label-muted-foreground = #666
-
 bar-volume-width = 10
-bar-volume-foreground-0 = #55aa55
-bar-volume-foreground-1 = #55aa55
-bar-volume-foreground-2 = #55aa55
-bar-volume-foreground-3 = #55aa55
-bar-volume-foreground-4 = #55aa55
-bar-volume-foreground-5 = #f5a70a
-bar-volume-foreground-6 = #ff5555
+bar-volume-foreground-0 = #ffffff
+bar-volume-foreground-1 = #ffffff
+bar-volume-foreground-2 = #ffffff
+bar-volume-foreground-3 = #ffffff
+bar-volume-foreground-4 = #ffffff 
+bar-volume-foreground-5 = #ffffff
+bar-volume-foreground-6 = #ffffff
 bar-volume-gradient = false
 bar-volume-indicator = |
 bar-volume-indicator-font = 2
@@ -211,43 +205,54 @@ battery = BAT0
 adapter = AC
 full-at = 98
 
-format-charging = <animation-charging> <label-charging>
-format-charging-underline = #ffffff
+format-charging = <animation-charging>  <label-charging>
+format-discharging = <ramp-capacity>  <label-discharging>
+format-full = <ramp-capacity>  <label-full>
 
-format-discharging = <animation-discharging> <label-discharging>
-format-discharging-underline = ${self.format-charging-underline}
+ramp-capacity-0 = 
+ramp-capacity-0-foreground = #f53c3c
+ramp-capacity-1 = 
+ramp-capacity-1-foreground = #ffa900
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
 
-format-full-prefix = " "
-format-full-prefix-foreground = ${colors.foreground-alt}
-format-full-underline = ${self.format-charging-underline}
+bar-capacity-width = 10
+bar-capacity-format = %{+u}%{+o}%fill%%empty%%{-u}%{-o}
+bar-capacity-fill = █
+bar-capacity-fill-foreground = #ddffffff
+bar-capacity-fill-font = 3
+bar-capacity-empty = █
+bar-capacity-empty-font = 3
+bar-capacity-empty-foreground = #44ffffff
 
-ramp-capacity-0 = 
-ramp-capacity-1 = 
-ramp-capacity-2 = 
-ramp-capacity-foreground = ${colors.foreground-alt}
-
-animation-charging-0 = 
-animation-charging-1 = 
-animation-charging-2 = 
-animation-charging-foreground = ${colors.foreground-alt}
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
 animation-charging-framerate = 750
 
-animation-discharging-0 = 
-animation-discharging-1 = 
-animation-discharging-2 = 
-animation-discharging-foreground = ${colors.foreground-alt}
-animation-discharging-framerate = 750
+[module/memory]
+type = internal/memory
+interval = 3
+format =  <label>
+label = " %gb_used% "
+
+[module/cpu]
+type = internal/cpu
+interval = 0.5
+label =  %percentage%%
 
 [module/powermenu]
 type = custom/menu
-
 expand-right = true
-
 format-spacing = 1
 
-label-open = ⏻
-label-open-foreground = ${colors.secondary}
-label-close =  cancel
+label-open = 
+;label-open-foreground = ${colors.secondary}
+label-open-foreground = #1793d0
+label-close = ﰸ 
 label-close-foreground = ${colors.secondary}
 label-separator = |
 label-separator-foreground = ${colors.foreground-alt}
@@ -260,24 +265,18 @@ menu-0-1-exec = menu-open-2
 menu-1-0 = cancel
 menu-1-0-exec = menu-open-0
 menu-1-1 = reboot
-menu-1-1-exec = sudo reboot
+menu-1-1-exec = reboot
 
 menu-2-0 = power off
-menu-2-0-exec = sudo poweroff
+menu-2-0-exec = poweroff
 menu-2-1 = cancel
 menu-2-1-exec = menu-open-0
 
 [settings]
 screenchange-reload = true
-;compositing-background = xor
-;compositing-background = screen
-;compositing-foreground = source
-;compositing-border = over
-;pseudo-transparency = false
-
+pseudo-transparency = true
 [global/wm]
 margin-top = 5
-margin-bottom = 2Ñw
+margin-bottom = 2
 
 
-; vim:ft=dosini

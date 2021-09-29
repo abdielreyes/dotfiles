@@ -1,87 +1,93 @@
+"            $$\                     
+"            \__|                    
+" $$\    $$\ $$\ $$$$$$\$$$$\        
+" \$$\  $$  |$$ |$$  _$$  _$$\       
+"  \$$\$$  / $$ |$$ / $$ / $$ |      
+"   \$$$  /  $$ |$$ | $$ | $$ |      
+"    \$  /   $$ |$$ | $$ | $$ |      
+"     \_/    \__|\__| \__| \__|  
+
 call plug#begin('~/.local/share/nvim/site/autoload/plugged')
     Plug 'preservim/nerdtree'
-    Plug 'Xuyuanp/vim-nerdtree-syntax-highlight'
-    Plug 'easymotion/vim-easymotion'
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'caenrique/nvim-toggle-terminal'
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
-    Plug 'pangloss/vim-javascript'
-    Plug 'leafgarland/typescript-vim'
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
-    "Plug 'morhetz/gruvbox'
-    "Plug 'arcticicestudio/nord-vim'
     Plug 'rafi/awesome-vim-colorschemes'
     Plug 'chun-yang/auto-pairs'
     Plug 'psliwka/vim-smoothie'
     Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+    Plug 'tpope/vim-surround'
+    Plug 'tpope/vim-fugitive'
+    Plug 'airblade/vim-rooter'
 call plug#end()
 
-"colorscheme gruvbox
-colorscheme nord
+colorscheme afterglow
+let g:afterglow_italic_comments=1
+let g:afterglow_inherit_background=1 
+let g:indent_guides_enable_on_vim_startup = 1
 
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 0
 let g:airline#extensions#tabline#formatter = 'default'
-let g:airline_theme='gruvbox'
+let g:airline_theme='afterglow'
 
+set termguicolors
+syntax on
 set encoding=utf-8
-"Some servers have issues with backup files
 set nobackup
 set noswapfile
-"Persist undo history
 set undofile 
 set undodir=~/.vim/undodir
-"stop acting like classic vi
 set nocompatible
 set history=1000
 set number
-"set textwidth=79
 set numberwidth=1
 set ruler
 set cursorline
 set showmatch
 set matchtime=1
 "set relativenumber
-
-"Display 5 lines above the cursor when scrolling with a mouse
-    set scrolloff=8
-"Fixes common backspace problems
+set scrolloff=8
 set backspace=indent,eol,start
-"Speedup scrolling
 set ttyfast 
-"Automatically wrap text that extends beyond the screen length
 set wrap
-" Size tabs in spaces
 set sw=4
+set timeoutlen=400
 
 let mapleader=" "
-" Press mapleader, s, an ocurrence with 2 chars, and jump into text!
-nmap <Leader>s <Plug>(easymotion-s2)
 nmap <Leader>n :NERDTreeFind<CR>
-nmap <Leader>nn :NERDTreeToggle<CR>
+nmap <Leader>nn :call NERDTreeToggleAndRefresh()<CR>
 nmap <Leader>nr :NERDTreeRefreshRoot<CR>
-nmap <Leader>ww :wq!<CR>
+nmap <Leader>wq :wq!<CR>
 nmap <Leader>qq :q!<CR>
 nmap <Leader>w :w<CR>
+
 let NERDTreeShowHidden=1
+let NERDTreeQuitOnOpen=1
 
-"next buffer
+function NERDTreeToggleAndRefresh()
+  :NERDTreeToggle
+  if g:NERDTree.IsOpen()
+    :NERDTreeRefreshRoot
+  endif
+endfunction
+
+nmap <Leader>b :Buffers<CR>
 nmap <Leader>bn :bn<CR>
-"delete curent buffer
+nmap <Leader>bv :bp<CR>
 nmap <Leader>bb :bw<CR>
-"let NERDTreeQuitOnOpen=1
 
-"Toggle terminal Ctrl Z
 nnoremap <silent> <C-z> :ToggleTerminal<Enter>
 tnoremap <silent> <C-z> <C-\><C-n>:ToggleTerminal<Enter>
-"Enter without entering in insert mode
-"nnoremap o o<Esc>
-"nnoremap O O<Esc>
 
-"fzf 
+"Copying and pasting 
+vnoremap <C-c> "*y :let @+=@*<CR>
+map <C-p> "+p
+
 nmap <Leader>ff :Files<CR>
 
 "Move lines
@@ -91,6 +97,18 @@ inoremap <C-A-j> <Esc>:m .+1<CR>==gi
 inoremap <C-A-k> <Esc>:m .-2<CR>==gi
 vnoremap <C-A-j> :m '>+1<CR>gv=gv
 vnoremap <C-A-k> :m '<-2<CR>gv=gv
+
+
+
+
+
+
+
+
+
+
+
+
 
 "COC config
 
@@ -138,6 +156,5 @@ inoremap <silent><expr> <cr> EnterSelect()
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 "COC Prettier with :Prettier
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
-
 
 

@@ -1,30 +1,35 @@
-#! /bin/sh
+#! /bin/bash
 
 pgrep -x sxhkd > /dev/null || sxhkd &
 
-bspc monitor -d I II III IV V VI VII VIII IX X
+if [[ $(xrandr -q | grep -w 'DP1 connected') ]]; then
+    xrandr --output eDP1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output DP1 --mode 1440x900 --pos 1920x47 --rotate normal 
+    bspc monitor eDP1 -d 1 2 3 4 5 
+    bspc monitor DP1 -d  6 7 8 9 0
+else
+    bspc monitor -d 1 2 3 4 5 6 7 8 9 0
+fi
+
 
 bspc config border_width         2
-bspc config window_gap          12
+bspc config window_gap          25
 
 bspc config split_ratio          0.52
 bspc config borderless_monocle   true
 bspc config gapless_monocle      true
-
-bspc rule -a Gimp desktop='^8' state=floating follow=on
-bspc rule -a Chromium desktop='^2'
-bspc rule -a mplayer2 state=floating
-bspc rule -a Kupfer.py focus=on
-bspc rule -a Screenkey manage=off
-wmname LG3D & # fix for some Java apps
+bspc config focus_follows_pointer true
 
 
-bash ~/.config/polybar/launch.sh --colorblocks &
-nitrogen --restore &
-picom &
+
 xsetroot -cursor_name left_ptr &
 
-xinput set-prop 12 324 1
-xinput set-prop 12 342 1
+touchpad_id=$(xinput -list | sed '/Touchpad/s/.*id=\([0-9]*\).*/\1/;t;d')
+echo $touchpad_id
+xinput set-prop $touchpad_id 'libinput Tapping Enabled' 1
+xinput set-prop $touchpad_id 'libinput Natural Scrolling Enabled' 1
 
 
+feh --bg-scale /home/abdiel/Pictures/wallpapers/anime1.png
+picom &
+$HOME/.config/polybar/launch.sh &
+#redshift -l 19.432608:-99.133209 &

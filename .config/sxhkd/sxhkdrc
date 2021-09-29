@@ -1,14 +1,18 @@
 #
 # wm independent hotkeys
 #
-
 # terminal emulator
+super + {_,shift +}Return
+    {alacritty, bspc rule -a \* -o state=floating && alacritty}
 super + Return
-	tilix
-
-# program launcher
-#super + @space
-super + d
+	alacritty
+#
+super + o
+    google-chrome-stable
+super + i
+    thunar
+#program launcher
+super + @space
     rofi -show run
 
 # make sxhkd reload its configuration files:
@@ -17,23 +21,32 @@ super + Escape
 
 #Volume Control
 XF86AudioLowerVolume
-	amixer set Master 5%-
+	pactl -- set-sink-volume 0 -10%
 XF86AudioRaiseVolume
-	amixer set Master 5%+
+	pactl -- set-sink-volume 0 +10%
 XF86AudioMute
         amixer set Master toggle
 # Close screen
-super + shift + c
+super + c
     sleep 0.5; xset dpms force standby
 #Lock
-super + shift + x
+super + x
     bash ~/scripts/lock.sh
+super + shift + x
+    sleep 0.5; xset dpms force standby; bash ~/scripts/lock.sh
+#Lock
 #Brightness control
 XF86MonBrightnessDown
 	xbacklight -dec 5
 XF86MonBrightnessUp
 	xbacklight -inc 5
-#
+super + F10
+    scrot '/tmp/%F_%T_$wx$h.png' -u 'xclip -selection clipboard -target image/png -i $f'
+super + shift + F10
+    	bash ~/scripts/selscreenshot.sh 
+    scrot '/tmp/%F_%T_$wx$h.png' -s 'xclip -selection clipboard -target image/png -i $f'
+
+
 # bspwm hotkeys
 #
 
