@@ -1,0 +1,4 @@
+lsblk -l 
+#that givesyou the name
+udisksctl mount -b /dev/sdX
+udisksctl umount -b /dev/sdX

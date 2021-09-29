@@ -1,0 +1,5 @@
+localectl list-keymaps
+
+localectl list-keymaps | grep i termino_busqueda
+
+loadkeys mapa_teclado
