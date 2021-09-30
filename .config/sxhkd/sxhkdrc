@@ -10,7 +10,7 @@ super + Return
 super + o
     google-chrome-stable
 super + i
-    thunar
+    pcmanfm
 #program launcher
 super + @space
     rofi -show run
