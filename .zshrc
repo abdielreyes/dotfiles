@@ -83,6 +83,7 @@ plugins=(
     zsh-syntax-highlighting
     zsh-autosuggestions
     sudo
+		vi-mode
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -133,4 +134,11 @@ export PATH="$PATH:/home/abdiel/.local/bin"
 
 alias vim="nvim"
 alias vi="nvim"
+
+export PATH="$PATH:/home/abdiel/scripts"
+export PATH=~/.npm-global/bin:$PATH
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+
 

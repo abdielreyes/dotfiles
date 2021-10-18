@@ -14,6 +14,7 @@ call plug#begin('~/.local/share/nvim/site/autoload/plugged')
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'sheerun/vim-polyglot'
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'rafi/awesome-vim-colorschemes'
@@ -22,18 +23,29 @@ call plug#begin('~/.local/share/nvim/site/autoload/plugged')
     Plug 'mg979/vim-visual-multi', {'branch': 'master'}
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-fugitive'
-    Plug 'airblade/vim-rooter'
+    Plug 'ryanoasis/vim-devicons'
+    Plug 'tpope/vim-commentary'
+		
+		Plug 'tpope/vim-rails'
+		Plug 'tpope/vim-endwise'
+		Plug 'ctrlpvim/ctrlp.vim'
+		Plug 'francoiscabrol/ranger.vim'
+		Plug 'rbgrouleff/bclose.vim'
+		Plug 'airblade/vim-rooter'
+		Plug 'Yggdroot/indentLine'
 call plug#end()
 
-colorscheme afterglow
-let g:afterglow_italic_comments=1
-let g:afterglow_inherit_background=1 
-let g:indent_guides_enable_on_vim_startup = 1
+"let g:sonokai_style = 'andromeda'
+let g:sonokai_enable_italic = 1
+let g:sonokai_disable_italic_comment = 1
+let g:sonokai_transparent_background = 0
+
+colorscheme sonokai
 
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 0
 let g:airline#extensions#tabline#formatter = 'default'
-let g:airline_theme='afterglow'
+let g:airline_theme='sonokai'
 
 set termguicolors
 syntax on
@@ -51,15 +63,15 @@ set cursorline
 set showmatch
 set matchtime=1
 "set relativenumber
-set scrolloff=8
+set scrolloff=12
 set backspace=indent,eol,start
 set ttyfast 
 set wrap
 set sw=4
 set timeoutlen=400
+filetype plugin on
 
 let mapleader=" "
-nmap <Leader>n :NERDTreeFind<CR>
 nmap <Leader>nn :call NERDTreeToggleAndRefresh()<CR>
 nmap <Leader>nr :NERDTreeRefreshRoot<CR>
 nmap <Leader>wq :wq!<CR>
@@ -67,7 +79,7 @@ nmap <Leader>qq :q!<CR>
 nmap <Leader>w :w<CR>
 
 let NERDTreeShowHidden=1
-let NERDTreeQuitOnOpen=1
+let NERDTreeQuitOnOpen=0
 
 function NERDTreeToggleAndRefresh()
   :NERDTreeToggle
@@ -77,15 +89,12 @@ function NERDTreeToggleAndRefresh()
 endfunction
 
 nmap <Leader>b :Buffers<CR>
-nmap <Leader>bn :bn<CR>
-nmap <Leader>bv :bp<CR>
-nmap <Leader>bb :bw<CR>
-
+nnoremap <silent> <Leader>bb :bp<BAR>bd#<CR>
 nnoremap <silent> <C-z> :ToggleTerminal<Enter>
 tnoremap <silent> <C-z> <C-\><C-n>:ToggleTerminal<Enter>
 
 "Copying and pasting 
-vnoremap <C-c> "*y :let @+=@*<CR>
+vnoremap <C-y> "*y :let @+=@*<CR>
 map <C-p> "+p
 
 nmap <Leader>ff :Files<CR>
@@ -97,14 +106,19 @@ inoremap <C-A-j> <Esc>:m .+1<CR>==gi
 inoremap <C-A-k> <Esc>:m .-2<CR>==gi
 vnoremap <C-A-j> :m '>+1<CR>gv=gv
 vnoremap <C-A-k> :m '<-2<CR>gv=gv
-
-
-
-
-
-
-
-
+" Use shift alt and hjkl to resize
+nnoremap <S-M-j> :resize -2<CR>
+nnoremap <S-M-k> :resize +2<CR>
+nnoremap <S-M-h> :vertical resize -2 <CR>
+nnoremap <S-M-l> :vertical resize +2 <CR>
+"move between buffers
+nnoremap <TAB> :bnext<CR>
+nnoremap <S-TAB> :bprevious<CR>
+"easy write and quit
+nnoremap <C-s> :w<CR>
+nnoremap <C-q> :q!<CR>
+"Ctrl c is Esc
+map <C-c> <ESC>
 
 
 
@@ -112,21 +126,21 @@ vnoremap <C-A-k> :m '<-2<CR>gv=gv
 
 "COC config
 
-let g:coc_global_extensions=['coc-solargraph','coc-json','coc-css','coc-tsserver','coc-clangd', 'coc-emmet','coc-fzf-preview','coc-highlight','coc-prettier','coc-pyright','coc-sh','coc-sql','coc-html','coc-java']
+let g:coc_global_extensions=['coc-vimtex','coc-solargraph','coc-json','coc-css','coc-tsserver','coc-clangd','coc-emmet','coc-fzf-preview','coc-highlight','coc-prettier','coc-pyright','coc-sh','coc-sql','coc-html','coc-java']
 " TextEdit might fail if hidden is not set.
 set hidden
 set updatetime=300
 set shortmess+=c
-"Tab for completion
+"Tab for completion confirmr
+inoremap <silent><expr> <TAB>
+						\ pumvisible() ? "\<C-n>" :
+						\ <SID>check_back_space() ? "\<TAB>" :
+						\ coc#refresh()
 inoremap <expr><S-TAB> plumvisible() ? "\<C-p>" : "\<C-h>"
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
 if has('nvim')
   inoremap <silent><expr> <c-space> coc#refresh()
 else
@@ -148,7 +162,7 @@ function! EnterSelect()
         return "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
     endif
 endfunction
-
+		
 " makes <CR> confirm selection if any or just break line if none
 inoremap <silent><expr> <cr> EnterSelect()
 "inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()

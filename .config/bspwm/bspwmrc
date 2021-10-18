@@ -4,10 +4,10 @@ pgrep -x sxhkd > /dev/null || sxhkd &
 
 if [[ $(xrandr -q | grep -w 'DP1 connected') ]]; then
     xrandr --output eDP1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output DP1 --mode 1440x900 --pos 1920x47 --rotate normal 
-    bspc monitor eDP1 -d 1 2 3 4 5 
-    bspc monitor DP1 -d  6 7 8 9 0
+    bspc monitor eDP1 -d I II III IV V
+    bspc monitor DP1 -d  VI VII VII IX X
 else
-    bspc monitor -d 1 2 3 4 5 6 7 8 9 0
+    bspc monitor -d I II III IV V VI VII VII IX X
 fi
 
 
@@ -31,7 +31,7 @@ xinput set-prop $touchpad_id 'libinput Tapping Enabled' 1
 xinput set-prop $touchpad_id 'libinput Natural Scrolling Enabled' 1
 
 
-feh --bg-scale /home/abdiel/Pictures/wallpapers/archcomputer_cropped.png
+feh --bg-scale /home/abdiel/Pictures/wallpapers/macsierra.jpg
 picom &
 $HOME/.config/polybar/launch.sh &
 #redshift -l 19.432608:-99.133209 &
