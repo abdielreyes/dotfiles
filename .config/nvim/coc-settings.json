@@ -1,4 +1,13 @@
 {
-  "suggest.enablePreselect": false,
-  "suggest.noselect": true
+  "suggest.noselect" : true,
+  "suggest.enablePreselect" : false,
+  coc.preferences.formatOnSaveFiletypes": [
+    "javascript",
+    "typescript",
+    "typescriptreact",
+    "json",
+    "javascriptreact",
+    "typescript.tsx",
+    "graphql"
+  ]
 }
