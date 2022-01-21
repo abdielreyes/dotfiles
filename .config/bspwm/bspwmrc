@@ -10,8 +10,17 @@ else
     bspc monitor -d I II III IV V VI VII VII IX X
 fi
 
+if [[ $(xrandr -q | grep -w 'HDMI1 connected') ]]; then
 
-bspc config border_width        2
+xrandr --output eDP1 --mode 1920x1080 --pos 1920x0 --rotate normal --output DP1 --off --output HDMI1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI2 --off --output VIRTUAL1 --off
+    bspc monitor HDMI1 -d 1 2 3 4 5
+    bspc monitor eDP1 -d  6 7 8 9 10
+else
+    bspc monitor -d I II III IV V VI VII VII IX X
+fi
+
+
+bspc config border_width        1
 bspc config window_gap          25
 
 bspc config split_ratio          0.52
@@ -27,12 +36,9 @@ IRONIC_WM_NAME="LG3D"
 NET_WIN=$(xprop -root _NET_SUPPORTING_WM_CHECK | awk -F "# " '{print $2}')
 
 if [[ "$NET_WIN" == 0x* ]]; then
-    # xprop cannot reliably set UTF8_STRING, so we replace as string.
-    # fortunately, jdk is OK with this, but wm-spec says use UTF8_STRING.
     xprop -id "$NET_WIN" -remove _NET_WM_NAME
     xprop -id "$NET_WIN" -f _NET_WM_NAME 8s -set _NET_WM_NAME "$IRONIC_WM_NAME"
 else
-    # even if we're not net compatible, do java workaround
     xprop -root -remove _NET_WM_NAME
     xprop -root -f _NET_WM_NAME 8s -set _NET_WM_NAME "$IRONIC_WM_NAME"
 fi
@@ -44,7 +50,7 @@ xinput set-prop $touchpad_id 'libinput Tapping Enabled' 1
 xinput set-prop $touchpad_id 'libinput Natural Scrolling Enabled' 1
 
 
-feh --bg-scale /home/abdiel/Pictures/wallpapers/archgruv2.png
+feh --bg-scale /home/abdiel/Pictures/wallpapers/nord.png
 picom &
 $HOME/.config/polybar/launch.sh &
 #redshift -l 19.432608:-99.133209 &

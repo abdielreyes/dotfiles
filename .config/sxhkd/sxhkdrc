@@ -9,6 +9,7 @@ super + Return
 #
 super + o
     google-chrome-stable
+		# firefox-developer-edition
 super + i
     pcmanfm
 #program launcher

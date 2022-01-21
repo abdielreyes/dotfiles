@@ -16,8 +16,8 @@ export ZSH="/home/abdiel/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-# ZSH_THEME="powerlevel10k/powerlevel10k"
-ZSH_THEME="philips"
+# ZSH_THEME="philips"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in $ZSH/themes/
@@ -128,15 +128,17 @@ function custom_prompt() {
   PS1="$PS1$VTE_PWD_THING"
 }
 PROMPT_COMMAND=custom_prompt
-export GEM_HOME="$(ruby -e 'puts Gem.user_dir')"
-export PATH="$PATH:$GEM_HOME/bin"
-export PATH="$PATH:/home/abdiel/.local/bin"
+
 
 alias vim="nvim"
 alias vi="nvim"
 
 export PATH="$PATH:/home/abdiel/scripts"
-export PATH=~/.npm-global/bin:$PATH
+PATH="$HOME/.local/bin:$PATH"
+export npm_config_prefix="$HOME/.local"
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+export GEM_HOME="$(ruby -e 'puts Gem.user_dir')"
+export PATH="$PATH:$GEM_HOME/bin"
 

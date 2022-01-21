@@ -29,22 +29,18 @@
 ;==========================================================
 
 [colors]
-;background = #8B008B
-;background-alt = #9932CC
-;foreground = ${xrdb:color7:#222}
-;foreground-alt = ${xrdb:color7:#222}
 
-background = #222
-background-alt = #30616e
-foreground = #dfdfdf
-foreground-alt = #808080
+background = #2E3440
+background-alt = #8FBCBB
+foreground = #ECEFF4
+foreground-alt = #4C566A
 
 primary = #ffffff
 secondary = #ffffff
 alert = #dddddd
 
 [bar/main]
-monitor = eDP1
+monitor = HDMI1
 width = 100%
 height = 30
 offset-x = 0%
@@ -76,6 +72,38 @@ cursor-click = pointer
 cursor-scroll = ns-resize
 
 [bar/2ndbar]
+monitor = eDP1
+width = 100%
+height = 27
+;offset-x = 0%
+;offset-y = 0%
+radius = 1.0
+fixed-center = true
+wm-restack = bspwm
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 3
+line-color = #f00
+
+border-size = 4
+border-color = #00000000
+padding-left = 2
+padding-right = 2
+module-margin-left = 1
+module-margin-right = 2
+
+font-0 = "Hack Nerd Font:pixelsize=12;1"
+modules-left = bspwm 
+modules-center =  xwindow 
+modules-right =   backlight pulseaudio date powermenu
+
+tray-position = right
+tray-padding = 2
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+[bar/3rdbar]
 monitor = DP1
 width = 100%
 height = 27
@@ -108,26 +136,26 @@ cursor-click = pointer
 cursor-scroll = ns-resize
 
 
+
 [module/xwindow]
 type = internal/xwindow
-label = %title:0:50:...%
+label = %title:0:40:...%
 
 [module/bspwm]
 type = internal/bspwm
-
-label-focused = %index%
+label-focused = %name%
 label-focused-background = ${colors.background-alt}
 label-focused-underline= ${colors.primary}
 label-focused-padding = 2
 
-label-occupied = %index%
+label-occupied = %name%
 label-occupied-padding = 2
 
-label-urgent = %index%!
+label-urgent = %name%!
 label-urgent-background = ${colors.alert}
 label-urgent-padding = 2
 
-label-empty = %index%
+label-empty = %name%
 label-empty-foreground = ${colors.foreground-alt}
 label-empty-padding = 2
 
