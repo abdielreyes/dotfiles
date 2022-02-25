@@ -11,7 +11,7 @@ super + o
     google-chrome-stable
 		# firefox-developer-edition
 super + i
-    pcmanfm
+    alacritty -e ranger
 #program launcher
 super + @space
     rofi -show run
@@ -34,7 +34,7 @@ super + c
 super + x
     bash ~/scripts/lock.sh
 super + shift + x
-    sleep 0.5; xset dpms force standby; bash ~/scripts/lock.sh
+    bash ~/scripts/lock.sh; systemctl suspend
 #Lock
 #Brightness control
 XF86MonBrightnessDown
@@ -42,11 +42,11 @@ XF86MonBrightnessDown
 XF86MonBrightnessUp
 	xbacklight -inc 5
 super + F10
-    scrot '/tmp/%F_%T_$wx$h.png' -u 'xclip -selection clipboard -target image/png -i $f'
+  flameshot gui
 super + shift + F10
-    	bash ~/scripts/selscreenshot.sh 
-    scrot '/tmp/%F_%T_$wx$h.png' -s 'xclip -selection clipboard -target image/png -i $f'
-
+	flameshot screen -c
+super + period
+	rofi -show emoji -modi emoji
 
 # bspwm hotkeys
 #

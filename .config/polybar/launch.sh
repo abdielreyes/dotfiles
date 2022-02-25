@@ -12,7 +12,7 @@ if [[ $(xrandr -q | grep -w 'HDMI1 connected') ]]; then
     polybar main >>/tmp/polybar2.log &
 else
     echo "---" | tee -a /tmp/polybar1.log /tmp/polybar2.log
-    polybar main  >>/tmp/polybar1.log 2>&1 &
+    polybar 3rdbar  >>/tmp/polybar1.log 2>&1 &
 fi
 
 echo "Bars launched..."

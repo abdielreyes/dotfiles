@@ -1,18 +1,21 @@
 call plug#begin('~/.local/share/nvim/site/autoload/plugged')
+	Plug 'mhinz/vim-startify'
 	Plug 'preservim/nerdtree'
 	Plug 'christoomey/vim-tmux-navigator'
-
+	Plug 'tpope/vim-repeat'
 	Plug 'easymotion/vim-easymotion'
 	Plug 'caenrique/nvim-toggle-terminal'
+	Plug 'airblade/vim-rooter'
+	Plug 'jceb/vim-orgmode'
 
 	Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 	Plug 'junegunn/fzf.vim'
 
 	Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-	Plug 'sheerun/vim-polyglot'
+	Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 
 	Plug 'rafi/awesome-vim-colorschemes'
+	Plug 'marko-cerovac/material.nvim'
 	Plug 'vim-airline/vim-airline'
 	Plug 'vim-airline/vim-airline-themes'
 	Plug 'jiangmiao/auto-pairs'  
@@ -22,72 +25,78 @@ call plug#begin('~/.local/share/nvim/site/autoload/plugged')
 	Plug 'tpope/vim-fugitive'
 	Plug 'ryanoasis/vim-devicons'
 	Plug 'tpope/vim-commentary'
-	" Plug 'tpope/vim-endwise'
-
+	Plug 'AndrewRadev/tagalong.vim'
 	Plug 'Yggdroot/indentLine'
 	Plug 'tpope/vim-rails'
 call plug#end()
-
-
-colorscheme  nord
+let g:material_theme_style = 'palenight'
+let g:material_terminal_italics = 1
+colorscheme  material
 
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#formatter = 'default'
-let g:airline_theme='nord'
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:airline_theme='base16_material_palenight'
+
+set termguicolors
 set mouse=a
 set noerrorbells
-set termguicolors
 syntax on
 set encoding=utf-8
 set nobackup
 set noswapfile
 set undofile 
 set undodir=~/.vim/undodir
+set history=1000
 set nocompatible
-" set history=1000
 set number
 set numberwidth=1
 set ruler
 set cursorline
 set showmatch
 set matchtime=1
+
+set updatetime=300
+
 " set relativenumber
 set scrolloff=15
 set backspace=indent,eol,start
 set ttyfast 
 set wrap
+
 set sw=2
 set ts=2
-set smartindent
-set autoindent
 set noexpandtab
+set autoindent
+set smartindent
+filetype plugin indent on
+
 set timeoutlen=500
 set splitbelow
 set splitright
-filetype plugin on
+
 let mapleader=" "
-nmap <Leader>nn :call NERDTreeToggleAndRefresh()<CR>
-nmap <Leader>nr :NERDTreeRefreshRoot<CR>
+let maplocalleader=","
 nmap <Leader>wq :wq!<CR>
 nmap <Leader>qq :q!<CR>
 nmap <Leader>w :w<CR>
 nmap <Leader>ss <Plug>(easymotion-s2)
-
+"splits file into buffer
 nmap <Leader>v :split<CR>
 nmap <Leader>vv :vsplit<CR>
 
+nmap <Leader>nn :call NERDTreeToggleAndRefresh()<CR>
+nmap <Leader>nr :NERDTreeRefreshRoot<CR>
 let NERDTreeShowHidden=1
 let NERDTreeQuitOnOpen=0
-
-
+"Auto refresh when toggles nerdtree
 function NERDTreeToggleAndRefresh()
   :NERDTreeToggle
   if g:NERDTree.IsOpen()
     :NERDTreeRefreshRoot
   endif
 endfunction
-
+"Move between buffers
 nmap <Leader>b :Buffers<CR>
 nnoremap <silent> <Leader>bb :bp\|bd #<CR>
 
@@ -116,15 +125,14 @@ nnoremap <S-M-l> :vertical resize +2 <CR>
 nnoremap <TAB> :bnext<CR>
 nnoremap <S-TAB> :bprevious<CR>
 "easy write and quit
-"nnoremap <C-s> :w<CR>
-"nnoremap <C-q> :q!<CR>
+nnoremap <C-s> :w<CR>
+nnoremap <C-q> :q!<CR>
 "Ctrl c is Esc
 map <C-c> <ESC>
 nmap <F5> :source ~/.config/nvim/init.vim<CR>
 vmap <F5> :source ~/.config/nvim/init.vim<CR>
 
-
-
+let &showbreak=repeat(' ', 14)
 
 
 " coc config
@@ -147,7 +155,6 @@ let g:coc_global_extensions = [
       \ 'coc-sh',
       \ ]
 set hidden
-set updatetime=300
 
 set shortmess+=c
 
@@ -180,8 +187,6 @@ function! EnterSelect()
 endfunction
 inoremap <silent><expr> <cr> EnterSelect()
 
-"inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)

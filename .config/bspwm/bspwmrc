@@ -50,7 +50,7 @@ xinput set-prop $touchpad_id 'libinput Tapping Enabled' 1
 xinput set-prop $touchpad_id 'libinput Natural Scrolling Enabled' 1
 
 
-feh --bg-scale /home/abdiel/Pictures/wallpapers/nord.png
+feh --bg-scale /home/abdiel/Pictures/wallpapers/iis.png
 picom &
 $HOME/.config/polybar/launch.sh &
 #redshift -l 19.432608:-99.133209 &
