@@ -15,7 +15,6 @@ call plug#begin('~/.local/share/nvim/site/autoload/plugged')
 	Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 
 	Plug 'rafi/awesome-vim-colorschemes'
-	Plug 'marko-cerovac/material.nvim'
 	Plug 'vim-airline/vim-airline'
 	Plug 'vim-airline/vim-airline-themes'
 	Plug 'jiangmiao/auto-pairs'  
@@ -29,14 +28,18 @@ call plug#begin('~/.local/share/nvim/site/autoload/plugged')
 	Plug 'Yggdroot/indentLine'
 	Plug 'tpope/vim-rails'
 call plug#end()
-let g:material_theme_style = 'palenight'
-let g:material_terminal_italics = 1
-colorscheme  material
+
+let g:sonokai_style = 'andromeda'
+let g:sonokai_enable_italic = 1
+let g:sonokai_disable_italic_comment = 1
+let g:sonokai_transparent_background = 1
+colorscheme sonokai
+
 
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
-let g:airline_theme='base16_material_palenight'
+let g:airline_theme='sonokai'
 
 set termguicolors
 set mouse=a
@@ -55,7 +58,6 @@ set ruler
 set cursorline
 set showmatch
 set matchtime=1
-
 set updatetime=300
 
 " set relativenumber
@@ -172,20 +174,15 @@ function! s:check_back_space() abort
 endfunction
 
 " Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-function! EnterSelect()
-  if pumvisible() && complete_info()["selected"] == -1
-    return "\<C-y>\<CR>"
-
-  elseif pumvisible()
-    return coc#_select_confirm()
-
-  else
-    return "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-  endif
-endfunction
-inoremap <silent><expr> <cr> EnterSelect()
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 
 nmap <silent> [g <Plug>(coc-diagnostic-prev)

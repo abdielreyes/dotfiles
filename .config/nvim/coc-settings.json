@@ -1,6 +1,6 @@
 {
-  "suggest.noselect" : true,
-  "suggest.enablePreselect" : false,
+  "suggest.noselect": true,
+  "suggest.enablePreselect": false,
   "coc.preferences.formatOnSaveFiletypes": [
     "javascript",
     "typescript",
@@ -10,5 +10,5 @@
     "typescript.tsx",
     "graphql"
   ],
-  "emmet.includeLanguages": {"javascript": "javascriptreact"}
+  "emmet.includeLanguages": { "javascript": "javascriptreact" }
 }

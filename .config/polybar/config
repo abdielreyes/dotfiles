@@ -30,14 +30,14 @@
 
 [colors]
 
-background = #2E3440
-background-alt = #8FBCBB
-foreground = #ECEFF4
-foreground-alt = #4C566A
+background = #0F111A
+background-alt = #717CB4
+foreground = #FFFFFF
+foreground-alt = #8F93A2
 
-primary = #ffffff
-secondary = #ffffff
-alert = #dddddd
+primary = #eeffff
+secondary = #89ddff
+alert = #eeffff
 
 [bar/main]
 monitor = HDMI1
@@ -128,7 +128,7 @@ module-margin-right = 2
 font-0 = "Hack Nerd Font:pixelsize=12;1"
 modules-left = bspwm 
 modules-center =  xwindow 
-modules-right =   backlight pulseaudio wlan date battery powermenu
+modules-right =   cpu memory backlight pulseaudio wlan date battery powermenu
 
 tray-position = right
 tray-padding = 2
