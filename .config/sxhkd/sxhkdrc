@@ -11,7 +11,7 @@ super + o
     google-chrome-stable
 		# firefox-developer-edition
 super + i
-    alacritty -e ranger
+	pcmanfm
 #program launcher
 super + @space
     rofi -show run
@@ -35,16 +35,15 @@ super + x
     bash ~/scripts/lock.sh
 super + shift + x
     bash ~/scripts/lock.sh; systemctl suspend
-#Lock
 #Brightness control
 XF86MonBrightnessDown
 	xbacklight -dec 5
 XF86MonBrightnessUp
 	xbacklight -inc 5
-super + F10
-  flameshot gui
-super + shift + F10
+Print
 	flameshot screen -c
+shift + Print
+	flameshot gui
 super + period
 	rofi -show emoji -modi emoji
 
