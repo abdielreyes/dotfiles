@@ -12,6 +12,8 @@ super + o
 		# firefox-developer-edition
 super + i
 	pcmanfm
+super + u
+	alacritty -e ranger
 #program launcher
 super + @space
     rofi -show run
@@ -42,7 +44,7 @@ XF86MonBrightnessUp
 	xbacklight -inc 5
 Print
 	flameshot screen -c
-shift + Print
+super + shift + s
 	flameshot gui
 super + period
 	rofi -show emoji -modi emoji
