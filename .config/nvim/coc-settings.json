@@ -1,6 +1,6 @@
 {
   "suggest.noselect": true,
-  "suggest.enablePreselect": false,
+  "suggest.enablePreselect": true,
   "coc.preferences.formatOnSaveFiletypes": [
     "javascript",
     "typescript",
