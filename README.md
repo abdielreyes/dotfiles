@@ -7,6 +7,7 @@ this directory contains the dotfiles for my system
 Ensure you have the following packages installed
 
 - git
+    - lazygit
 - stow
 - nvim ^0.8.0
     - npm
