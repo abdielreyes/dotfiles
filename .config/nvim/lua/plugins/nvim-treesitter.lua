@@ -1,9 +1,6 @@
 -- syntax highlighting
 return {
     {
-        "tpope/vim-fugitive"
-    },
-    {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
         config = function()
