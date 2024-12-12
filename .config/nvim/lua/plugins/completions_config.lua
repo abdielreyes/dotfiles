@@ -19,8 +19,14 @@ return {
 		dependencies = { "saadparwaiz1/cmp_luasnip", "rafamadriz/friendly-snippets" },
 	},
 	{
-		"onsails/lspkind.nvim"
+		"onsails/lspkind.nvim",
 	},
+	--[[ { ]]
+	--[[ 	"brenoprata10/nvim-highlight-colors", ]]
+	--[[ 	config = function() ]]
+	--[[ 		require("nvim-highlight-colors").setup({}) ]]
+	--[[ 	end, ]]
+	--[[ }, ]]
 	{
 		"hrsh7th/nvim-cmp",
 		config = function()
@@ -35,8 +41,8 @@ return {
 						maxwidth = 50,
 						ellipsis_char = "...",
 						show_labelDetails = true,
-						symbol_map = {Copilot = ""},
-						before = function(entry, vim_item)
+						symbol_map = { Copilot = "" },
+						before = function(_, vim_item)
 							return vim_item
 						end,
 					}),

@@ -1,3 +1,18 @@
+local lsp_servers = {
+	"lua_ls",
+	"bashls",
+	"clangd",
+	"jdtls",
+	"sqlls",
+	"marksman",
+	"pyright",
+	"html",
+	"cssls",
+	"ts_ls",
+	"tailwindcss",
+	"emmet_ls",
+	"eslint",
+}
 return {
 	{
 		"williamboman/mason.nvim",
@@ -12,21 +27,15 @@ return {
 		config = function()
 			require("mason-lspconfig").setup({
 				auto_install = true,
-				ensure_installed = {
-					"lua_ls",
-					"bashls",
-					"clangd",
-					"emmet_ls",
-					"jdtls",
-					"tsserver",
-					"html",
-					"cssls",
-					"sqlls",
-					"marksman",
-					"pyright",
-				},
+				ensure_installed = lsp_servers,
 			})
 		end,
+	},
+	{
+		"princejoogie/tailwind-highlight.nvim",
+		dependencies = {
+			"neovim/nvim-lspconfig",
+		},
 	},
 	{
 		"neovim/nvim-lspconfig",
@@ -34,44 +43,24 @@ return {
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 			local lspconfig = require("lspconfig")
+			local tw_highlight = require("tailwind-highlight")
 			--here have to specify the languages needed for lsp
-			lspconfig.jdtls.setup({
+			for _, server in ipairs(lsp_servers) do
+				lspconfig[server].setup({
+					capabilities = capabilities,
+				})
+			end
+			--config for tailwind colorizing
+			lspconfig.tailwindcss.setup({
 				capabilities = capabilities,
+				on_attach = function(client, bufnr)
+					tw_highlight.setup(client, bufnr, {
+						single_column = false,
+						mode = "background",
+						debounce = 200,
+					})
+				end,
 			})
-			lspconfig.bashls.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.tsserver.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.lua_ls.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.emmet_ls.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.bashls.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.clangd.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.cssls.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.pyright.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.sqlls.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.marksman.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.html.setup({
-				capabilities = capabilities,
-			})
-
 			local opts = {}
 			vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
 			vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
@@ -80,11 +69,8 @@ return {
 			vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
 			vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, opts)
 			vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-			vim.keymap.set( { "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
+			vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
 			vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-			vim.keymap.set("n", "<leader>gf", function()
-				vim.lsp.buf.format({ async = true })
-			end, opts)
 		end,
 	},
 }
