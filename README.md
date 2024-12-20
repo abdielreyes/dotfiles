@@ -3,6 +3,7 @@
 this directory contains the dotfiles for my system
 
 ## Prerequisites
+
 Ensure you have the following packages installed
 
 ```bash
@@ -15,12 +16,14 @@ curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/lates
 tar xf lazygit.tar.gz lazygit
 sudo install lazygit /usr/local/bin
 
-#nvm 
+#nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 nvm install --lts
 ```
+
 - Install latest nvim [from here](https://github.com/neovim/neovim/blob/master/BUILD.md)
 - Install zsh utils.
+
 ```bash
 which zsh
 sudo chsh -s /usr/bin/zsh
@@ -29,18 +32,24 @@ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+git clone https://github.com/moarram/headline.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/headline
+
 
 #tmux plugin manager
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ```
 
 ## Installation
+
 First, check out the repo into $home directory using git
+
 ```bash
 git clone git@github.com:abdielreyes/dotfiles.git
 cd dotfiles/
 ```
+
 Run GNU stow to create symlinks
+
 ```bash
-stow . 
+stow .
 ```

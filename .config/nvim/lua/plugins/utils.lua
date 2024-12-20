@@ -62,8 +62,15 @@ return {
 		"karb94/neoscroll.nvim",
 		config = function()
 			require("neoscroll").setup({
-				easing_function = "circular", -- Default easing function
+				easing_function = "sine", -- Default easing function
 			})
+		end,
+	},
+	{
+		"justinmk/vim-sneak",
+		config = function()
+			vim.g["sneak#label"] = 1
+			vim.g["sneak#s_next"] = 1
 		end,
 	},
 	{
@@ -124,6 +131,14 @@ return {
 					"~/",
 					"/home/abdiel",
 				},
+			})
+		end,
+	},
+	{
+		"edluffy/hologram.nvim",
+		config = function()
+			require("hologram").setup({
+				auto_display = true, -- WIP automatic markdown image display, may be prone to breaking
 			})
 		end,
 	},
