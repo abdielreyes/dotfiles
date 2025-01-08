@@ -43,9 +43,9 @@ return {
 			vim.keymap.set("n", "<leader>tv", ":ToggleTerm size=40 direction=vertical<CR>")
 			vim.keymap.set("n", "<leader>tf", ":ToggleTerm  direction=float<CR>")
 
-			vim.keymap.set("n", [[<c-t>]], '<cmd>exe v:count1 . "ToggleTerm"<CR>')
-			vim.keymap.set("i", [[<c-t>]], '<cmd>exe v:count1 . "ToggleTerm"<CR>')
-			vim.keymap.set("t", [[<c-t>]], '<cmd>exe v:count1 . "ToggleTerm"<CR>')
+			vim.keymap.set("n", [[<c-t>]], '<cmd>exe v:count1 . "ToggleTerm size=40 direction=vertical"<CR>')
+			vim.keymap.set("i", [[<c-t>]], '<cmd>exe v:count1 . "ToggleTerm size=40 direction=vertical"<CR>')
+			vim.keymap.set("t", [[<c-t>]], '<cmd>exe v:count1 . "ToggleTerm size=40 direction=vertical"<CR>')
 		end,
 	},
 	{
