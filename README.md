@@ -37,6 +37,10 @@ git clone https://github.com/moarram/headline.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh
 
 #tmux plugin manager
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+#catppuccin theme
+mkdir -p ~/.tmux/plugins/catppuccin
+git clone -b v2.1.2 https://github.com/catppuccin/tmux.git ~/.tmux/plugins/catppuccin/tmux
+#to install libs, in tmux press prefix + I
 ```
 
 ## Installation
