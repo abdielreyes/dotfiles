@@ -13,7 +13,7 @@ return {
 		config = function()
 			require("lualine").setup({
 				options = {
-					theme = "catppuccin",
+					theme = "gruvbox",
 				},
 				sections = {
 					lualine_c = {

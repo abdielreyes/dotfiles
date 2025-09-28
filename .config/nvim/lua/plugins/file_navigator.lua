@@ -40,7 +40,7 @@ return {
 				},
 			},
 		})
-		vim.keymap.set("n", "<leader>n", ":Neotree filesystem focus left toggle<cr>")
-		vim.keymap.set("n", "<leader>N", ":Neotree buffers focus right toggle<cr>")
+		vim.keymap.set("n", "<leader>e", ":Neotree filesystem focus left toggle<cr>")
+		vim.keymap.set("n", "<leader>E", ":Neotree buffers focus right toggle<cr>")
 	end,
 }

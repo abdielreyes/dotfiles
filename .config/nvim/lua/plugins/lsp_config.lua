@@ -12,8 +12,16 @@ local lsp_servers = {
 	"tailwindcss",
 	"emmet_ls",
 	"eslint",
+	"ruby_lsp",
 }
 return {
+	{
+		"nvim-java/nvim-java",
+
+		config = function()
+			require("java").setup()
+		end,
+	},
 	{
 		"williamboman/mason.nvim",
 		lazy = false,
@@ -26,7 +34,7 @@ return {
 		lazy = false,
 		config = function()
 			require("mason-lspconfig").setup({
-				auto_install = true,
+				automatic_installation = true,
 				ensure_installed = lsp_servers,
 			})
 		end,
@@ -37,19 +45,19 @@ return {
 			"neovim/nvim-lspconfig",
 		},
 	},
+	{ "folke/neodev.nvim", opts = {} },
 	{
 		"neovim/nvim-lspconfig",
+		dependencies = {
+			"williamboman/mason.nvim",
+		},
 		lazy = false,
 		config = function()
+			require("neodev").setup({})
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 			local lspconfig = require("lspconfig")
 			local tw_highlight = require("tailwind-highlight")
-			--here have to specify the languages needed for lsp
-			for _, server in ipairs(lsp_servers) do
-				lspconfig[server].setup({
-					capabilities = capabilities,
-				})
-			end
+			require("lspconfig").jdtls.setup({})
 			--config for tailwind colorizing
 			lspconfig.tailwindcss.setup({
 				capabilities = capabilities,
@@ -61,16 +69,32 @@ return {
 					})
 				end,
 			})
-			local opts = {}
-			vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-			vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-			vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-			vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-			vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-			vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, opts)
-			vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-			vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
-			vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+			local on_attach = function(_, bufnr)
+				local opts = { buffer = bufnr }
+				vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+				vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+				vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+				vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+				vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+				vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, opts)
+				vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+				vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
+				vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+			end
+			--here have to specify the languages needed for lsp
+			for _, server in ipairs(lsp_servers) do
+				lspconfig[server].setup({
+					settings = {
+						Lua = {
+							completion = {
+								callSnippet = "Replace",
+							},
+						},
+					},
+					capabilities = capabilities,
+					on_attach = on_attach,
+				})
+			end
 		end,
 	},
 }

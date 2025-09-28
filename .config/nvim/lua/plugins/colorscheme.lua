@@ -1,20 +1,20 @@
 --colorscheme
 return {
+	--[[ { ]]
+	--[[]]
+	--[[ 	"catppuccin/nvim", ]]
+	--[[ 	name = "catppuccin", ]]
+	--[[ 	priority = 1000, ]]
+	--[[ 	lazy = false, ]]
+	--[[ 	config = function() ]]
+	--[[ 		vim.cmd.colorscheme("catppuccin-mocha") ]]
+	--[[ 	end, ]]
+	--[[ }, ]]
 	{
-
-		"catppuccin/nvim",
-		name = "catppuccin",
-		priority = 1000,
-		lazy = false,
+		"ellisonleao/gruvbox.nvim",
 		config = function()
-			vim.cmd.colorscheme("catppuccin-mocha")
+			vim.cmd.colorscheme("gruvbox")
+			vim.o.background = "dark"
 		end,
 	},
-	-- {
-	-- 	"ellisonleao/gruvbox.nvim",
-	-- 	config = function()
- --            vim.cmd.colorscheme("gruvbox")
- --            vim.o.background = "dark"
-	-- 	end,
-	-- },
 }

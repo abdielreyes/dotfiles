@@ -1,3 +1,9 @@
+local langs = {
+	"typescript",
+	"javascript",
+	"typescriptreact",
+	"javascriptreact",
+}
 return {
 	{
 		"mfussenegger/nvim-dap",
@@ -64,7 +70,7 @@ return {
 				adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" }, -- which adapters to register in nvim-dap
 			})
 
-			for _, language in ipairs({ "typescript", "javascript", "typescriptreact", "javascriptreact" }) do
+			for _, language in ipairs(langs) do
 				require("dap").configurations[language] = {
 					{
 						type = "pwa-node",

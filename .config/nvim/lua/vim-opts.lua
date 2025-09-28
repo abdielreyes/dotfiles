@@ -9,6 +9,7 @@ opt.number = true
 opt.ruler = true
 -- tabs and indent
 opt.tabstop = 4
+opt.softtabstop = 4
 opt.shiftwidth = 4
 opt.expandtab = true
 opt.autoindent = true
@@ -42,4 +43,4 @@ opt.splitbelow = true
 opt.iskeyword:append("-")
 
 --scrolloff
-opt.scrolloff = 15
+opt.scrolloff = 10
