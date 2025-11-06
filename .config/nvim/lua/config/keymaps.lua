@@ -38,9 +38,4 @@ map("n", "gr", vim.lsp.buf.references, opts)          -- find references
 map("n", "K",  vim.lsp.buf.hover, opts)               -- hover docs
 map("n", "<leader>rn", vim.lsp.buf.rename, opts)      -- rename symbol
 map("n", "<leader>ca", vim.lsp.buf.code_action, opts) -- code actions
--- map("n", "<leader>f", function()
---   vim.lsp.buf.format({ async = true })                -- async format
--- end, opts)
-vim.keymap.set("n", "<leader>fm", function()
-  vim.lsp.buf.format({ async = true })
-end, { desc = "Format Code" })
+

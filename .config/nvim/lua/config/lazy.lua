@@ -11,7 +11,7 @@ if not uv.fs_stat(lazypath) then
 end
 
 -- Prepend lazy.nvim to runtime path
-vim.opt.rtp:prepend(lazypath)
+  vim.opt.rtp:prepend(lazypath)
 
 -- Register our plugin modules, keep everything lazy-loaded by default
 require("lazy").setup({

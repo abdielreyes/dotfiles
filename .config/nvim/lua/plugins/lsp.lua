@@ -82,10 +82,7 @@ return {
       })
 
       define("eslint", { settings = { workingDirectory = { mode = "auto" } } })
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        pattern = { "*.ts", "*.tsx", "*.js", "*.jsx" },
-        callback = function() pcall(vim.cmd, "EslintFixAll") end,
-      })
+
 
       define("html", {})
       define("cssls", {})
