@@ -47,8 +47,6 @@ return {
 
 			{ "<leader>cc", "<cmd>CopilotChatToggle<cr>", desc = "Toggle Chat" },
 			{ "<leader>co", "<cmd>CopilotChatOpen<cr>", desc = "Open Chat" },
-			{ "<leader>cq", "<cmd>CopilotChat<cr>", desc = "Ask About Buffer" },
-
 			{
 				"<leader>ce",
 				function()
@@ -77,6 +75,14 @@ return {
 			},
 		},
 		init = function()
+			vim.api.nvim_create_autocmd("BufEnter", {
+				pattern = "copilot-*",
+				callback = function()
+					vim.opt_local.relativenumber = false
+					vim.opt_local.number = false
+					vim.opt_local.conceallevel = 0
+				end,
+			})
 			vim.g.copilot_no_tab_map = true
 			vim.keymap.set("i", "<S-Tab>", 'copilot#Accept("\\<S-Tab>")', { expr = true, replace_keycodes = false })
 			vim.api.nvim_create_autocmd("FileType", {

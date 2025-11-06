@@ -1,0 +1,10 @@
+\.DS_Store
+\.fonts/
+\.scripts/
+\.git/
+\.gitignore/
+\.gitmodules/
+\.config/lazygit
+\.config/github-copilot
+
+
