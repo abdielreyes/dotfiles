@@ -1,79 +1,139 @@
 -- lua/plugins/copilot.lua
 return {
 
-  -- GitHub Copilot core (inline OFF, we’ll use cmp instead)
-  {
-    "zbirenbaum/copilot.lua",
-    event = "InsertEnter",
-    opts = {
-      panel = { enabled = false },
-      suggestion = {
-        enabled = false,      -- <= IMPORTANT: let cmp show Copilot items
-        auto_trigger = false,
-      },
-      filetypes = { ["*"] = true },
-    },
-    config = function(_, opts)
-      require("copilot").setup(opts)
-    end,
-  },
+	---------------------------------------------------------------------------
+	-- Copilot core (inline disabled; you use cmp)
+	---------------------------------------------------------------------------
+	{
+		"zbirenbaum/copilot.lua",
+		event = "InsertEnter",
+		opts = {
+			panel = { enabled = false },
+			suggestion = {
+				enabled = false, -- we use cmp for suggestions
+				auto_trigger = false,
+			},
+			filetypes = { ["*"] = true },
+		},
+		config = function(_, opts)
+			vim.g.copilot_no_tab_map = true -- <== disable all tab overrides
+			require("copilot").setup(opts)
+		end,
+	},
 
-  -- Copilot as a completion source for nvim-cmp
-  {
-    "zbirenbaum/copilot-cmp",
-    dependencies = { "zbirenbaum/copilot.lua" },
-    event = "InsertEnter",
-    config = function()
-      require("copilot_cmp").setup()
-    end,
-  },
-  ---------------------------------------------------------------------------
-  -- 3) Copilot Chat
-  ---------------------------------------------------------------------------
-  {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "main",
-    dependencies = {
-      "zbirenbaum/copilot.lua",           -- shared auth/session
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",    -- optional but recommended
-      "nvim-tree/nvim-web-devicons",
-      "MunifTanjim/nui.nvim",
-    },
+	---------------------------------------------------------------------------
+	-- Copilot completion source for cmp
+	---------------------------------------------------------------------------
+	{
+		"zbirenbaum/copilot-cmp",
+		dependencies = { "zbirenbaum/copilot.lua" },
+		event = "InsertEnter",
+		config = function()
+			require("copilot_cmp").setup()
+		end,
+	},
+	-- copilot chat
+	{
+		"CopilotC-Nvim/CopilotChat.nvim",
+		dependencies = {
+			{ "nvim-lua/plenary.nvim", branch = "master" },
+			{ "zbirenbaum/copilot.lua" },
+		},
+		build = "make tiktoken",
+		event = "InsertEnter", -- same trigger as copilot.lua
+		-- ✅ which-key will detect these always
+		keys = {
+			{ "<leader>c", group = "Copilot Chat" }, -- <== top-level group
 
-    cmd = {
-      "CopilotChat",
-      "CopilotChatToggle",
-      "CopilotChatOpen",
-      "CopilotChatClose",
-    },
+			{ "<leader>cc", "<cmd>CopilotChatToggle<cr>", desc = "Toggle Chat" },
+			{ "<leader>co", "<cmd>CopilotChatOpen<cr>", desc = "Open Chat" },
+			{ "<leader>cq", "<cmd>CopilotChat<cr>", desc = "Ask About Buffer" },
 
-    keys = function()
-      local chat = require("CopilotChat")
-      return {
-        { "<leader>ac", function() chat.toggle() end, desc = "Copilot Chat (Toggle)" },
-        { "<leader>aq", function() chat.ask() end, desc = "Ask About Current Buffer" },
+			{
+				"<leader>ce",
+				function()
+					require("CopilotChat").ask("Explain")
+				end,
+				mode = "v",
+				desc = "Explain Selection",
+			},
 
-        -- Visual Mode: ask Copilot about selection
-        { "gax", function() chat.ask("Explain") end, mode = { "v" }, desc = "Explain Selection" },
-        { "gaf", function() chat.ask("Fix") end,     mode = { "v" }, desc = "Fix Selection" },
-        { "gat", function() chat.ask("Tests") end,   mode = { "v" }, desc = "Generate Tests" },
-      }
-    end,
+			{
+				"<leader>cf",
+				function()
+					require("CopilotChat").ask("Fix")
+				end,
+				mode = "v",
+				desc = "Fix Selection",
+			},
 
-    opts = {
-      window = {
-        layout = "float",
-        width = 0.45,
-        height = 0.80,
-        border = "rounded",
-      },
-      mappings = {
-        close = "q",
-        submit_prompt = "<CR>",
-      },
-      context = "buffer",  -- use current buffer as default context
-    },
-  },
+			{
+				"<leader>ct",
+				function()
+					require("CopilotChat").ask("Tests")
+				end,
+				mode = "v",
+				desc = "Generate Tests",
+			},
+		},
+		init = function()
+			vim.g.copilot_no_tab_map = true
+			vim.keymap.set("i", "<S-Tab>", 'copilot#Accept("\\<S-Tab>")', { expr = true, replace_keycodes = false })
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = "copilot-chat", -- buffer type used by CopilotChat input
+				callback = function()
+					local ok, cmp = pcall(require, "cmp")
+					if not ok then
+						return
+					end
+
+					cmp.setup.buffer({
+						-- Don't auto-popup; use <C-Space> or type '/' to trigger
+						completion = { autocomplete = false },
+						preselect = cmp.PreselectMode.None,
+
+						mapping = {
+							["<Tab>"] = function(fallback)
+								if cmp.visible() then
+									cmp.confirm({ select = true })
+								else
+									fallback()
+								end
+							end,
+
+							["<S-Tab>"] = function(fallback)
+								if cmp.visible() then
+									cmp.select_prev_item()
+								else
+									fallback()
+								end
+							end,
+
+							["<CR>"] = function()
+								if cmp.visible() then
+									-- 1) confirm the current suggestion
+									cmp.confirm({ select = true })
+									-- 2) then submit the chat prompt (on the next tick)
+									vim.schedule(function()
+										local keys = vim.api.nvim_replace_termcodes("<CR>", true, false, true)
+										vim.api.nvim_feedkeys(keys, "n", false)
+									end)
+								else
+									-- no popup: just submit the prompt
+									local keys = vim.api.nvim_replace_termcodes("<CR>", true, false, true)
+									vim.api.nvim_feedkeys(keys, "n", false)
+								end
+							end,
+						},
+					})
+				end,
+			})
+		end,
+		opts = {
+
+			-- See Configuration section for options
+			context = "buffer",
+			model = "claude-sonnet-4.5",
+		},
+	},
 }
-
