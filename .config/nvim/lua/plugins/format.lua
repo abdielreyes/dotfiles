@@ -1,6 +1,7 @@
 -- lua/plugins/format.lua
 -- Pure LSP formatting (no Conform, no null-ls)
 return {
+  -- it does not matter what plugin you put this config in,
 	{
 		-- This plugin is just a placeholder to run config inside Lazy's system.
 		-- It does NOT install anything.
