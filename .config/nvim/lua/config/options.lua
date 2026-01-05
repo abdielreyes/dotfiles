@@ -14,6 +14,6 @@ vim.opt.smartcase = true            -- ...unless uppercase used
 vim.opt.signcolumn = "yes"          -- always show sign column
 vim.opt.scrolloff = 6               -- keep context around cursor
 vim.opt.expandtab = true            -- spaces instead of tabs
-vim.opt.shiftwidth = 2              -- indentation width
-vim.opt.tabstop = 2                 -- render tabs as 2 spaces
+vim.opt.shiftwidth = 4              -- indentation width (fallback)
+vim.opt.tabstop = 4                 -- render tabs as 4 spaces (fallback)
 
