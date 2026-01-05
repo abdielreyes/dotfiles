@@ -1,16 +1,33 @@
 -- LSP stack for Neovim 0.11 using the new native API
+-- Configured via centralized language definitions
 return {
   { "williamboman/mason.nvim", build = ":MasonUpdate", opts = {} },
 
   {
     "williamboman/mason-lspconfig.nvim",
-    opts = {
-      ensure_installed = {
-        "vtsls", "eslint", "html", "cssls", "tailwindcss", "jsonls", "yamlls",
-        "lua_ls", "pyright", "gopls", "bashls", "clangd",
-      },
-      automatic_installation = true,
-    },
+    dependencies = { "williamboman/mason.nvim" },
+    opts = function()
+      local languages = require("config.languages")
+      return {
+        ensure_installed = languages.get_lsp_servers(),
+        automatic_installation = true,
+      }
+    end,
+  },
+
+  -- Auto-install all tools (LSPs, formatters, linters) via Mason
+  {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    dependencies = { "williamboman/mason.nvim" },
+    event = "VeryLazy",
+    opts = function()
+      local languages = require("config.languages")
+      return {
+        ensure_installed = languages.get_mason_packages(),
+        auto_update = true,
+        run_on_start = true,
+      }
+    end,
   },
 
   { "mfussenegger/nvim-jdtls", ft = { "java" } },
@@ -19,6 +36,8 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
+      local languages = require("config.languages")
+
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       local ok_cmp, cmp_lsp = pcall(require, "cmp_nvim_lsp")
       if ok_cmp then capabilities = cmp_lsp.default_capabilities(capabilities) end
@@ -35,7 +54,7 @@ return {
         map("n", "<leader>f", function() vim.lsp.buf.format({ async = true }) end)
       end
 
-      -- NEW: keep track of servers we define
+      -- Keep track of servers we define
       local defined = {}
 
       local function define(server, cfg)
@@ -51,70 +70,20 @@ return {
           cfg.on_attach = on_attach
         end
         vim.lsp.config(server, cfg)
-        table.insert(defined, server)  -- NEW: record server name
+        table.insert(defined, server)
       end
 
-      -- Servers
-      define("lua_ls", {
-        settings = {
-          Lua = {
-            diagnostics = { globals = { "vim" } },
-            workspace = { checkThirdParty = false },
-            format = { enable = false },
-          },
-        },
-      })
+      -- Dynamically configure all LSP servers from language config
+      for _, lang in pairs(languages.languages) do
+        if lang.lsp and not lang.use_jdtls_plugin then
+          define(lang.lsp, lang.lsp_config)
+        end
+      end
 
-      define("vtsls", {
-        settings = {
-          vtsls = { tsserver = { globalPlugins = {} } },
-          typescript = {
-            preferences = { importModuleSpecifier = "non-relative" },
-            inlayHints = {
-              includeInlayParameterNameHints = "all",
-              includeInlayVariableTypeHints = true,
-              includeInlayFunctionLikeReturnTypeHints = true,
-              includeInlayPropertyDeclarationTypeHints = true,
-            },
-          },
-          javascript = { inlayHints = { includeInlayParameterNameHints = "all" } },
-        },
-      })
-
-      define("eslint", { settings = { workingDirectory = { mode = "auto" } } })
-
-
-      define("html", {})
-      define("cssls", {})
-      define("jsonls", {})
-      define("yamlls", {})
-
-      define("tailwindcss", {
-        settings = {
-          tailwindCSS = {
-            experimental = { classRegex = { "tw`([^`]*)", "tw%(([^)]*)%)" } },
-          },
-        },
-      })
-
-      define("pyright", {})
-
-      define("gopls", {
-        settings = {
-          gopls = { gofumpt = true, analyses = { unusedparams = true }, staticcheck = true },
-        },
-      })
-
-      define("bashls", {})
-
-      define("clangd", {
-        cmd = { "clangd", "--background-index", "--clang-tidy" },
-      })
-
-      -- NEW: enable all servers we defined (fixes your error)
+      -- Enable all configured servers
       vim.lsp.enable(defined)
 
-      -- Java via nvim-jdtls (unchanged)
+      -- Java via nvim-jdtls (special setup)
       local ok_jdtls, jdtls = pcall(require, "jdtls")
       if ok_jdtls then
         local function start_jdtls()

@@ -1,55 +1,35 @@
 -- lua/plugins/format.lua
--- Pure LSP formatting (no Conform, no null-ls)
+-- DEPRECATED: Formatting is now handled by conform.nvim (see plugins/conform.lua)
+-- This file only contains LSP formatting control settings
 return {
-  -- it does not matter what plugin you put this config in,
 	{
 		-- This plugin is just a placeholder to run config inside Lazy's system.
-		-- It does NOT install anything.
 		"nvim-lua/plenary.nvim",
 		lazy = false,
 
 		config = function()
 			-------------------------------------------------------------------
-			-- :Format and :format commands
-			-------------------------------------------------------------------
-			vim.api.nvim_create_user_command("Format", function()
-				vim.lsp.buf.format({ async = true })
-			end, {})
-
-			-------------------------------------------------------------------
-			-- <leader>fm to format document
-			-------------------------------------------------------------------
-			vim.keymap.set("n", "<leader>fm", function()
-				vim.lsp.buf.format({ async = true })
-			end, { desc = "Format Code" })
-
-			-------------------------------------------------------------------
-			-- OPTIONAL: format on save
-			-- Enable by removing "--" from the autocmd below.
-			-------------------------------------------------------------------
-			-- vim.api.nvim_create_autocmd("BufWritePre", {
-			--   pattern = { "*.js", "*.ts", "*.tsx", "*.jsx", "*.lua", "*.go", "*.py", "*.c", "*.cpp" },
-			--   callback = function()
-			--     vim.lsp.buf.format()
-			--   end,
-			-- })
-
-			-------------------------------------------------------------------
-			-- OPTIONAL: Recommended formatting control.
-			-- Disable formatting from certain LSPs that conflict.
+			-- Disable formatting from certain LSPs to avoid conflicts
+			-- conform.nvim will handle formatting instead
 			-------------------------------------------------------------------
 			local disable_format_for = {
-				-- Add servers you DON'T want formatting your files:
-				-- ["tsserver"] = true,
-				-- ["vtsls"] = true,      -- if you use Prettier externally
-				-- ["eslint"] = true,
+				-- Disable formatting for LSPs where we use dedicated formatters via conform
+				["vtsls"] = true, -- Use prettier via conform
+				["tsserver"] = true, -- Use prettier via conform
+				["html"] = true, -- Use prettier via conform
+				["cssls"] = true, -- Use prettier via conform
+				["jsonls"] = true, -- Use prettier via conform
+				["yamlls"] = true, -- Use prettier via conform
+				["lua_ls"] = true, -- Use stylua via conform
+				["pyright"] = true, -- Use black/isort via conform
+				["gopls"] = true, -- Use gofumpt/goimports via conform
 			}
 
-			-- Hook into your global on_attach if you have one
+			-- Hook into LSP attach to disable formatting
 			local orig_on_attach = vim.lsp.on_attach or function() end
 
 			vim.lsp.on_attach = function(client, bufnr)
-				-- Disable formatting for certain servers
+				-- Disable formatting for servers listed above
 				if disable_format_for[client.name] then
 					client.server_capabilities.documentFormattingProvider = false
 					client.server_capabilities.documentRangeFormattingProvider = false

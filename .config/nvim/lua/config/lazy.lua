@@ -27,10 +27,11 @@ require("lazy").setup({
 		{ import = "plugins.snippets" }, -- snippets
 		{ import = "plugins.explorer" }, -- file explorer + telescope
 		{ import = "plugins.treesitter" }, -- treesitter
-		{ import = "plugins.format" }, -- formatting
-		{ import = "plugins.mason-tools" }, -- mason auto install
+		{ import = "plugins.conform" }, -- formatting via conform.nvim
+		{ import = "plugins.format" }, -- LSP formatting control
 		{ import = "plugins.dashboard" }, -- welcome screen
 		{ import = "plugins.copilot" }, -- copilot autocompletion and chat
+    { import = "plugins.lint"} -- linting via nvim-lint
 	},
 	defaults = { lazy = true },
 	install = { colorscheme = { "catppuccin" } },
