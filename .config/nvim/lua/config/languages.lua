@@ -16,13 +16,33 @@ M.languages = {
 		lsp = "lua_ls",
 		lsp_pkg = "lua-language-server",
 		formatters = { "stylua" },
-		linters = {},
+		linters = { "luacheck" }, -- Add luacheck for additional linting
 		lsp_config = {
 			settings = {
 				Lua = {
-					diagnostics = { globals = { "vim" } },
-					workspace = { checkThirdParty = false },
-					format = { enable = false },
+					runtime = {
+						version = "LuaJIT", -- Neovim uses LuaJIT
+					},
+					diagnostics = {
+						enable = true, -- explicitly enable diagnostics
+						globals = { "vim" }, -- recognize 'vim' global
+					},
+					workspace = {
+						checkThirdParty = false,
+						-- Make the server aware of Neovim runtime files
+						library = {
+							vim.env.VIMRUNTIME,
+							-- Uncomment below to add all plugins to workspace
+							-- "${3rd}/luv/library",
+							-- "${3rd}/busted/library",
+						},
+					},
+					telemetry = {
+						enable = false, -- don't send telemetry
+					},
+					format = {
+						enable = false, -- use stylua via conform instead
+					},
 				},
 			},
 		},

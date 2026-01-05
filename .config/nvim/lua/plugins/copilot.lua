@@ -16,7 +16,6 @@ return {
 			filetypes = { ["*"] = true },
 		},
 		config = function(_, opts)
-			vim.g.copilot_no_tab_map = true -- <== disable all tab overrides
 			require("copilot").setup(opts)
 		end,
 	},
@@ -43,12 +42,12 @@ return {
 		event = "InsertEnter", -- same trigger as copilot.lua
 		-- ✅ which-key will detect these always
 		keys = {
-			{ "<leader>c", group = "Copilot Chat" }, -- <== top-level group
+			{ "<leader>ai", group = "AI" }, -- <== top-level group
 
-			{ "<leader>cc", "<cmd>CopilotChatToggle<cr>", desc = "Toggle Chat" },
-			{ "<leader>co", "<cmd>CopilotChatOpen<cr>", desc = "Open Chat" },
+			{ "<leader>aic", "<cmd>CopilotChatToggle<cr>", desc = "Toggle Chat" },
+			{ "<leader>aio", "<cmd>CopilotChatOpen<cr>", desc = "Open Chat" },
 			{
-				"<leader>ce",
+				"<leader>aie",
 				function()
 					require("CopilotChat").ask("Explain")
 				end,
@@ -57,7 +56,7 @@ return {
 			},
 
 			{
-				"<leader>cf",
+				"<leader>aif",
 				function()
 					require("CopilotChat").ask("Fix")
 				end,
@@ -66,7 +65,7 @@ return {
 			},
 
 			{
-				"<leader>ct",
+				"<leader>ait",
 				function()
 					require("CopilotChat").ask("Tests")
 				end,

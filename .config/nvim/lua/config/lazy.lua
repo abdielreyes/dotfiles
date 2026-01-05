@@ -28,10 +28,10 @@ require("lazy").setup({
 		{ import = "plugins.explorer" }, -- file explorer + telescope
 		{ import = "plugins.treesitter" }, -- treesitter
 		{ import = "plugins.conform" }, -- formatting via conform.nvim
-		{ import = "plugins.format" }, -- LSP formatting control
 		{ import = "plugins.dashboard" }, -- welcome screen
 		{ import = "plugins.copilot" }, -- copilot autocompletion and chat
-    { import = "plugins.lint"} -- linting via nvim-lint
+		{ import = "plugins.lint" }, -- linting via nvim-lint
+		{ import = "plugins.git" }, -- git integration (fugitive + gitsigns)
 	},
 	defaults = { lazy = true },
 	install = { colorscheme = { "catppuccin" } },

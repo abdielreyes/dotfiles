@@ -42,16 +42,50 @@ return {
       local ok_cmp, cmp_lsp = pcall(require, "cmp_nvim_lsp")
       if ok_cmp then capabilities = cmp_lsp.default_capabilities(capabilities) end
 
-      local function on_attach(_, bufnr)
-        local function map(mode, lhs, rhs)
-          vim.keymap.set(mode, lhs, rhs, { noremap = true, silent = true, buffer = bufnr })
+      -- Disable formatting from certain LSPs to avoid conflicts with conform.nvim
+      local disable_format_for = {
+        ["vtsls"] = true,
+        ["tsserver"] = true,
+        ["html"] = true,
+        ["cssls"] = true,
+        ["jsonls"] = true,
+        ["yamlls"] = true,
+        ["lua_ls"] = true,
+        ["pyright"] = true,
+        ["gopls"] = true,
+      }
+
+      local function on_attach(client, bufnr)
+        -- Disable formatting for servers where conform.nvim handles it
+        if disable_format_for[client.name] then
+          client.server_capabilities.documentFormattingProvider = false
+          client.server_capabilities.documentRangeFormattingProvider = false
         end
-        map("n", "gd", vim.lsp.buf.definition)
-        map("n", "gr", vim.lsp.buf.references)
-        map("n", "K",  vim.lsp.buf.hover)
-        map("n", "<leader>rn", vim.lsp.buf.rename)
-        map("n", "<leader>ca", vim.lsp.buf.code_action)
-        map("n", "<leader>f", function() vim.lsp.buf.format({ async = true }) end)
+
+        local function map(mode, lhs, rhs, desc)
+          vim.keymap.set(mode, lhs, rhs, { noremap = true, silent = true, buffer = bufnr, desc = desc })
+        end
+
+        -- LSP navigation
+        map("n", "<leader>cd", vim.lsp.buf.definition, "Go to Definition")
+        map("n", "<leader>cr", vim.lsp.buf.references, "Go to References")
+        map("n", "<leader>cD", vim.lsp.buf.declaration, "Go to Declaration")
+        map("n", "<leader>ci", vim.lsp.buf.implementation, "Go to Implementation")
+        map("n", "<leader>ct", vim.lsp.buf.type_definition, "Go to Type Definition")
+
+        -- LSP actions
+        map("n", "<leader>ch", vim.lsp.buf.hover, "Hover Documentation")
+        map("n", "<leader>cs", vim.lsp.buf.signature_help, "Signature Help")
+        map("n", "<leader>cn", vim.lsp.buf.rename, "Rename Symbol")
+        map("n", "<leader>ca", vim.lsp.buf.code_action, "Code Action")
+        map("n", "<leader>cf", function() vim.lsp.buf.format({ async = true }) end, "Format Buffer")
+        map("v", "<leader>cf", function() vim.lsp.buf.format({ async = true }) end, "Format Selection")
+
+        -- LSP diagnostics
+        map("n", "<leader>ce", vim.diagnostic.open_float, "Show Line Diagnostics")
+        map("n", "[d", vim.diagnostic.goto_prev, "Previous Diagnostic")
+        map("n", "]d", vim.diagnostic.goto_next, "Next Diagnostic")
+        map("n", "<leader>cq", vim.diagnostic.setloclist, "Diagnostics to Location List")
       end
 
       -- Keep track of servers we define
