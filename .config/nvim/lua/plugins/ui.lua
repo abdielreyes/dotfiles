@@ -15,7 +15,19 @@ return {
 			sections = {
 				lualine_a = { "mode" },
 				lualine_b = { "branch", "diff" },
-				lualine_c = { { "filename", path = 1 } },
+				lualine_c = {
+					{ "filename", path = 1 },
+					{
+						function()
+							local gitsigns = vim.b.gitsigns_blame_line
+							if gitsigns then
+								return gitsigns
+							end
+							return ""
+						end,
+						icon = "",
+					},
+				},
 				lualine_x = { "encoding", "fileformat", "filetype" },
 				lualine_y = { "progress" },
 				lualine_z = { "location" },

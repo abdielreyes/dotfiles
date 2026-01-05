@@ -1,15 +1,12 @@
 
 export ZSH="/Users/abdiel/.oh-my-zsh"
 
-# ZSH_THEME="powerlevel10k/powerlevel10k"
 ZSH_THEME="alanpeabody"
 
 plugins=(
     git
-    #zsh-syntax-highlighting
-    #zsh-autosuggestions
     sudo
-	vi-mode
+    vi-mode
 )
 
 source $ZSH/oh-my-zsh.sh

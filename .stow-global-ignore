@@ -1,10 +1,13 @@
 \.DS_Store
 \.fonts/
 \.scripts/
-\.git/
-\.gitignore/
-\.gitmodules/
+\.git
+\.gitignore
+\.gitmodules
 \.config/lazygit
 \.config/github-copilot
+README\.md
+.*\.sh
+\.stow-global-ignore
 
 
